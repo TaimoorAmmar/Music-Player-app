@@ -1,23 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState, useEffect} from 'react';
+import Player from './components/Player';
 
 function App() {
+  const [songs, setSongs] = useState([
+    {
+      title: "Pasoori",
+      artist: "Ali Sethi,Shae Gill",
+      img_src: "./images/song-1.jpeg",
+      src: "./music/pasoori.mp3"
+    },
+
+    {
+      title: "Afreen Afreen",
+      artist: "Momina Mustehsan, Rahat Fateh Ali Khan",
+      img_src: "./images/song-2.jpg",
+      src: "./music/afreen.mp3"
+    },
+  
+    {
+      title: "Hum Kis Gali Ja Rahe Hai",
+      artist: "Atif Aslam",
+      img_src: "./images/song-3.jpeg",
+      src: "./music/Hum.mp3"
+    }
+
+  ]);
+
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const [nextSongIndex, setNextSongIndex] = useState(currentSongIndex + 1);
+
+  useEffect(()=> {
+    setNextSongIndex(()=>{
+      if(currentSongIndex + 1 > songs.length - 1){
+        return 0;
+      } else {
+        return currentSongIndex + 1;
+      }
+    });
+  }, [currentSongIndex]);
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      
+      <Player 
+        currentSongIndex={currentSongIndex}
+        setCurrentSongIndex={setCurrentSongIndex}
+        nextSongIndex={nextSongIndex}
+        songs={songs}
+      />
     </div>
   );
 }
